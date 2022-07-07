@@ -1,6 +1,6 @@
 @startuml NW
 title Network Sample
-!include network.puml
+!include https://raw.githubusercontent.com/Gowa2017/plantuml-network/main/network.puml
 
 cloud "net"
 

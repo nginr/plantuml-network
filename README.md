@@ -6,7 +6,7 @@ A simple lib to use office icon and rectangle to draw network topology diagram.
 ```puml
 @startuml NW
 title Network Sample
-!include network.puml
+!include https://raw.githubusercontent.com/Gowa2017/plantuml-network/main/network.puml
 
 cloud "net"
 
