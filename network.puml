@@ -1,0 +1,120 @@
+@startuml NW
+!include <office/Concepts/firewall>
+!include <office/Servers/application_server>
+!include <office/Servers/database_server>
+!include <office/Servers/datacenter>
+!include <office/Servers/network.puml>
+!include <office/Servers/reverse_proxy.puml>
+!include <office/Servers/server_generic.puml>
+!include <office/Servers/web_server.puml>
+!include <office/Servers/cluster_server>
+!include <office/Clouds/cloud>
+!include <office/Devices/load_balancer>
+!include <office/Devices/switch>
+!include <office/Devices/modem>
+!include <office/Devices/router>
+!include <office/Devices/cell_phone_generic>
+!include <office/Devices/device_laptop>
+!include <office/Devices/workstation>
+
+skinparam Nodesep 40
+skinparam Ranksep 40
+skinparam cloud {
+    BackgroundColor #cccccc
+}
+skinparam default {
+    TextAlignment center
+}
+skinparam rectangle {
+    BackgroundColor  #BBDEFB
+    BorderColor #424242
+    StereotypeFontSize 12
+    shadowing false
+    TextAlignment center
+}
+skinparam rectangle<<boundary>> {
+    Shadowing false
+    StereotypeFontSize 16
+    BackgroundColor white
+    BorderStyle dashed
+}
+
+!function entity($sprite="", $label="", $desc="")
+!if ($desc == "")
+!return "<$" + $sprite + ">\n" + $label
+!else
+!return "<$" + $sprite + ">\n" + $label + "\n" + $desc
+!end if
+!end function
+
+!function getBoundary($label="",$net="")
+!return "==" + $label +"\n" + $net
+!end function
+
+!procedure NWBoundary($alias,$label,$net="", $desc="")
+rectangle "getBoundary($label,$net)" <<boundary>> as $alias
+!end procedure
+
+
+!procedure NWFirewall($alias,$label,$desc="")
+rectangle "entity(firewall,$label,$desc)" as $alias
+!end procedure
+
+!procedure NWServer($alias,$label,$desc="")
+rectangle "entity(server_generic,$label,$desc)" as $alias
+!end procedure
+
+!procedure NWServerCluster($alias,$label,$desc="")
+rectangle "entity(cluster_server,$label,$desc)" as $alias
+!end procedure
+
+!procedure NWServerApp($alias,$label,$desc="")
+rectangle "entity(application_server,$label,$desc)" as $alias
+!end procedure
+
+!procedure NWServerDatabase($alias,$label,$desc="")
+rectangle "entity(database_server,$label,$desc)" as $alias
+!end procedure
+
+!procedure NWServerCenter($alias,$label,$desc="")
+rectangle "entity(datacenter,$label,$desc)" as $alias
+!end procedure
+
+!procedure NWServerProxy($alias,$label,$desc="")
+rectangle "entity(reverse_proxy,$label,$desc)" as $alias
+!end procedure
+
+!procedure NWServerWeb($alias,$label,$desc="")
+rectangle "entity(web_server,$label,$desc)" as $alias
+!end procedure
+
+!procedure NWCloud($alias,$label,$desc="")
+rectangle "entity(cloud,$label,$desc)" as $alias
+!end procedure
+
+!procedure NWModem($alias,$label,$desc="")
+rectangle "entity(modem,$label,$desc)" as $alias
+!end procedure
+
+!procedure NWSwitch($alias,$label,$desc="")
+rectangle "entity(switch,$label,$desc)" as $alias
+!end procedure
+
+!procedure NWRouter($alias,$label,$desc="")
+rectangle "entity(router,$label,$desc)" as $alias
+!end procedure
+
+!procedure NWLvs($alias,$label,$desc="")
+rectangle "entity(load_balancer,$label,$desc)" as $alias
+!end procedure
+
+!procedure NWMobile($alias,$label,$desc="")
+rectangle "entity(cell_phone_generic,$label,$desc)" as $alias
+!end procedure
+!procedure NWLaptop($alias,$label,$desc="")
+rectangle "entity(device_laptop,$label,$desc)" as $alias
+!end procedure
+!procedure NWWorkstation($alias,$label,$desc="")
+rectangle "entity(workstation,$label,$desc)" as $alias
+!end procedure
+@enduml
