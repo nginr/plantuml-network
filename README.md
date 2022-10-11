@@ -42,3 +42,7 @@ NWBoundary(a, "Test Env", "192.168.10.1/24") {
 
 @enduml
 ```
+![image](https://user-images.githubusercontent.com/33367355/177686822-a9180a1f-d5b1-46d7-88b4-807ff386a52d.png)
+
+
+@enduml
