@@ -39,11 +39,115 @@ skinparam rectangle<<boundary>> {
     BorderStyle dashed
 }
 
+
+' collect all defined properties as table rows
+!global $propTable = ""
+!global $propTableCaption = ""
+!global $propColCaption = "="
+
+!unquoted function SetPropertyHeader($col1Name, $col2Name, $col3Name = "", $col4Name = "")
+  !$propColCaption = ""
+  !$propTableCaption = "|= " + $col1Name + " |= " + $col2Name + " |"
+  !if ($col3Name != "")
+    !$propTableCaption = $propTableCaption + "= " + $col3Name + " |"
+  !endif
+  !if ($col4Name != "")
+    !$propTableCaption = $propTableCaption + "= " + $col4Name + " |"
+  !endif
+  !return ""
+!endfunction
+
+!unquoted function WithoutPropertyHeader()
+  !$propTableCaption = ""
+  !$propColCaption = "="
+  !return ""
+!endfunction
+
+!unquoted function AddProperty($col1, $col2, $col3 = "", $col4 = "")
+  !if ($propTable == "")
+    !if ($propTableCaption != "")
+      !$propTable = $propTableCaption + "\n"
+    !endif
+  !else
+    !$propTable = $propTable + "\n"
+  !endif
+  !$propTable = $propTable + "| " + $col1 + " |" + $propColCaption + " " + $col2 + " |"
+  !if ($col3 != "")
+    !$propTable = $propTable + " " + $col3 + " |"
+  !endif
+  !if ($col4 != "")
+    !$propTable = $propTable + " " + $col4 + " |"
+  !endif
+  !return ""
+!endfunction
+
+!unquoted function $getProps($alignedNL = "\n")
+  !if ($propTable != "")
+    !$retTable = $alignedNL + $propTable
+    !$propTable = ""
+    !return $retTable
+  !endif
+  !return ""
+!endfunction
+
+!unquoted function $getProps_L()
+  !return $getProps("\l")
+!endfunction
+
+!unquoted function $getProps_R()
+  !return $getProps("\r")
+!endfunction
+
+SetPropertyHeader("Property","Value")
+
+' Layout Helpers
+' ##################################
+
+!function $getHiddenLine($distance)
+  !return '-[hidden]' + %substr('------------', 0, %intval($distance) + 1)
+!endfunction
+
+!unquoted procedure Lay_D($from, $to)
+$from -[hidden]D- $to
+!endprocedure
+!unquoted procedure Lay_Down($from, $to)
+$from -[hidden]D- $to
+!endprocedure
+
+!unquoted procedure Lay_U($from, $to)
+$from -[hidden]U- $to
+!endprocedure
+!unquoted procedure Lay_Up($from, $to)
+$from -[hidden]U- $to
+!endprocedure
+
+!unquoted procedure Lay_R($from, $to)
+$from -[hidden]R- $to
+!endprocedure
+!unquoted procedure Lay_Right($from, $to)
+$from -[hidden]R- $to
+!endprocedure
+
+!unquoted procedure Lay_L($from, $to)
+$from -[hidden]L- $to
+!endprocedure
+!unquoted procedure Lay_Left($from, $to)
+$from -[hidden]L- $to
+!endprocedure
+
+' PlantUML bug: lines which does "not match" with the orientation/direction of the diagram
+' uses the same length therefore the method offers no direction at all.
+' If a direction is required the Lay_...() methods can be used
+!unquoted procedure Lay_Distance($from, $to, $distance="0")
+$from $getHiddenLine($distance) $to
+!endprocedure
+
+
 !function entity($sprite="", $label="", $desc="")
 !if ($desc == "")
-!return "<$" + $sprite + ">\n" + $label
+!return "<$" + $sprite + ">\n" + $label +  $getProps()
 !else
-!return "<$" + $sprite + ">\n" + $label + "\n" + $desc
+!return "<$" + $sprite + ">\n" + $label + "\n" + $desc + $getProps()
 !end if
 !end function
 
@@ -89,7 +193,7 @@ rectangle "entity(web_server,$label,$desc)" as $alias
 !end procedure
 
 !procedure NWCloud($alias,$label,$desc="")
-rectangle "entity(cloud,$label,$desc)" as $alias
+cloud "entity(cloud,$label,$desc)" as $alias
 !end procedure
 
 !procedure NWModem($alias,$label,$desc="")
@@ -111,10 +215,13 @@ rectangle "entity(load_balancer,$label,$desc)" as $alias
 !procedure NWMobile($alias,$label,$desc="")
 rectangle "entity(cell_phone_generic,$label,$desc)" as $alias
 !end procedure
+
 !procedure NWLaptop($alias,$label,$desc="")
 rectangle "entity(device_laptop,$label,$desc)" as $alias
 !end procedure
+
 !procedure NWWorkstation($alias,$label,$desc="")
 rectangle "entity(workstation,$label,$desc)" as $alias
 !end procedure
 @enduml
+
